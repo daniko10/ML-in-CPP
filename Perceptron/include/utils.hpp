@@ -11,8 +11,9 @@ template <typename T>
 void extractDataFromFile(
     std::vector<std::vector<T>>& X,
     std::vector<int>& Y,
-    std::string filename,
-    const std::array<std::string, 2>& class_names);
+    const std::string& filename,
+    const std::array<std::string, 2>& class_names,
+    const char& delimiter);
 
 template <typename T>
 void splitDataForTrainTestDataset(

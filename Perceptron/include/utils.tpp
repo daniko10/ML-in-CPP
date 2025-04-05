@@ -6,8 +6,9 @@ template <typename T>
 void extractDataFromFile(
     std::vector<std::vector<T>>& X,
     std::vector<int>& Y,
-    std::string filename,
-    const std::array<std::string, 2>& class_names)
+    const std::string& filename,
+    const std::array<std::string, 2>& class_names,
+    const char& delimiter)
 {
     std::ifstream file("../" + filename);
     std::string line{};
@@ -20,7 +21,7 @@ void extractDataFromFile(
         std::stringstream ss(line);
         std::string value{};
         
-        while (std::getline(ss, value, ',')) {
+        while (std::getline(ss, value, delimiter)) {
             if (value == class_names[0] or value == class_names[1])
                 y = value == class_names[0] ? 0 : 1;
             else
