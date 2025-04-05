@@ -5,8 +5,9 @@ Perceptron<T>::Perceptron(
     int inputs,
     double learning_rate) : _nmbr_of_inputs(inputs), _lr(learning_rate) 
 {
+    srand(time(NULL));
     for(int i=0; i< inputs; i++)
-        _weights.push_back(((double) rand() / (RAND_MAX)));
+        _weights.push_back((double) rand() / RAND_MAX);
 }
 
 template <typename T>
@@ -15,24 +16,27 @@ void Perceptron<T>::train(
     const std::vector<int>& Y_train,
     const int& epochs) 
 {
-    int all_cases = 0;
     double train_accuracy = 0;
+    int index = 0;
     for (int epoch = 1; epoch <= epochs; epoch++) {
-        int index = -1;
+        train_accuracy = 0;
+        index = 0;
         for(const auto& x_train : X_train) {
             const double sum = calculateWeightSum(x_train);
             const int fun_value = calculateActFunVal(sum);
-            const int loss_value = calculateLossValue(Y_train[++index], fun_value);
+            const int loss_value = calculateLossValue(Y_train[index], fun_value);
 
-            if (loss_value == 0)
+            std::cout<<"sum: "<< sum << ", fun_value: " << fun_value << ", loss: " << loss_value << std::endl;
+
+            if (fun_value == Y_train[index])
                 train_accuracy += 1;
-            all_cases += 1;
-
-            updateWeights(x_train, loss_value);
+            else
+                updateWeights(x_train, loss_value);
+            
+            index++;
         }
+        std::cout << "Train accuracy: " << train_accuracy / X_train.size() * 100 << "%, epoch: " << epoch << std::endl;
     }
-
-    std::cout << "Train accuracy: " << train_accuracy / all_cases * 100 << "%" << std::endl;
 }
 
 template <typename T>
@@ -41,19 +45,19 @@ void Perceptron<T>::test(
     const std::vector<int>& Y_test) const
 {
     double test_accuracy = 0;
-    int all_cases = 0;
-    int index = -1;
+    int index = 0;
     for(const auto& x_test : X_test) {
         const double sum = calculateWeightSum(x_test);
         const int fun_value = calculateActFunVal(sum);
-        const int loss_value = calculateLossValue(Y_test[++index], fun_value);
+        const int loss_value = calculateLossValue(Y_test[index], fun_value);
 
-        if (loss_value == 0)
+        if (fun_value == Y_test[index])
             test_accuracy += 1;
-        all_cases += 1;
+
+        index++;
     }
 
-    std::cout << "Test accuracy: " << test_accuracy / all_cases * 100 << "%" << std::endl;
+    std::cout << "Test accuracy: " << test_accuracy / X_test.size() * 100 << "%" << std::endl;
 }
 
 template <typename T>
@@ -94,4 +98,6 @@ void Perceptron<T>::updateWeights(
     for(int i=0; i < _nmbr_of_inputs; i++) {
         _weights[i] = _weights[i] + _lr * loss_value * x_train[i];
     }
+
+    std::cout << " Weights are updated!\n";
 }

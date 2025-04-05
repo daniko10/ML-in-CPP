@@ -4,8 +4,6 @@
 #include <cstdlib>
 
 int main() {
-    srand(time(NULL));
-
     Perceptron<double> perceptron(3, 0.01);
 
     std::vector<std::vector<double>> X{};
