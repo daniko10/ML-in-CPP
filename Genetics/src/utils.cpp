@@ -12,6 +12,10 @@ namespace utils
         const int &population,
         const int &nmbr_of_parents)
     {
+        if (population <= 0 || nmbr_of_parents <= 1 || population < nmbr_of_parents)
+        {
+            return {};
+        }
         vector<Solution> parents{};
         vector<std::pair<double, double>> rulette_ranges{};
         vector<int> already_picked_solutions{};
@@ -58,6 +62,10 @@ namespace utils
         const std::vector<Solution> &best,
         const int& n)
     {
+        if (solutions.size() < n or best.size() < n) {
+            return;
+        }
+
         for (int i = 0; i < n; i++)
         {
             solutions[i] = best[i];

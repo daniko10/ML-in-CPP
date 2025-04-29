@@ -9,7 +9,6 @@ using utils::function;
 
 namespace genetic
 {
-
     Solution::Solution(const int &n)
     {
         for (int i = 0; i < n; i++)
@@ -32,7 +31,7 @@ namespace genetic
         std::for_each(bits.begin(), bits.end(), [&sum, &index](const int &bit)
                       { sum += bit * pow(2, index--); });
 
-        sum /= pow(2, 16);
+        sum /= pow(2, bits.size());
         return sum;
     }
 
@@ -72,6 +71,10 @@ namespace genetic
         }
 
         return {first_child, second_child};
+    }
+
+    bool Solution::operator==(const Solution& rhs) const {
+        return bits == rhs.bits;
     }
 
 } // namespace genetic
